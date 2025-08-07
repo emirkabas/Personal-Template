@@ -114,6 +114,22 @@ async def search_apartments(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error searching apartments: {str(e)}")
 
+# Put specific routes BEFORE parameterized routes to avoid conflicts
+@router.get("/apartments/cities", response_model=List[str])
+async def get_cities(db: Session = Depends(get_db)):
+    """Get list of all available cities."""
+    cities = ApartmentCRUD.get_cities(db)
+    return sorted(cities)
+
+@router.get("/apartments/stats", response_model=Dict[str, Any])
+async def get_apartment_stats(db: Session = Depends(get_db)):
+    """Get statistics about apartment listings."""
+    try:
+        stats = ApartmentCRUD.get_stats(db)
+        return stats
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving stats: {str(e)}")
+
 @router.get("/apartments/{apartment_id}", response_model=ApartmentResponse)
 async def get_apartment(apartment_id: int, db: Session = Depends(get_db)):
     """Get a specific apartment by ID."""
@@ -162,21 +178,6 @@ async def deactivate_apartment(apartment_id: int, db: Session = Depends(get_db))
         raise HTTPException(status_code=404, detail="Apartment not found")
     
     return {"message": "Apartment marked as inactive"}
-
-@router.get("/apartments/cities", response_model=List[str])
-async def get_cities(db: Session = Depends(get_db)):
-    """Get list of all available cities."""
-    cities = ApartmentCRUD.get_cities(db)
-    return sorted(cities)
-
-@router.get("/apartments/stats", response_model=Dict[str, Any])
-async def get_apartment_stats(db: Session = Depends(get_db)):
-    """Get statistics about apartment listings."""
-    try:
-        stats = ApartmentCRUD.get_stats(db)
-        return stats
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error getting statistics: {str(e)}")
 
 @router.get("/apartments/search/advanced")
 async def advanced_search(

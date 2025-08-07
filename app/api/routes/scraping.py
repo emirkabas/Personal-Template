@@ -27,7 +27,7 @@ class ScrapingResponse(BaseModel):
 scraper_manager = ScraperManager()
 
 @router.get("/scraping/sources")
-async def get_available_sources() -> Dict[str, List[str]]:
+async def get_available_sources() -> Dict[str, Any]:
     """Get list of available scraping sources."""
     return {
         "sources": scraper_manager.get_available_scrapers(),
