@@ -8,7 +8,7 @@ lxml==4.9.3
 # Database
 sqlalchemy==2.0.23
 alembic==1.12.1
-psycopg2-binary==2.9.7
+# psycopg2-binary==2.9.7  # Not needed for SQLite
 
 # Web framework
 fastapi==0.104.1
@@ -17,13 +17,13 @@ jinja2==3.1.2
 python-multipart==0.0.6
 
 # Data processing
-pandas==2.1.3
-numpy==1.25.2
+# pandas==2.1.3  # Removed due to Python 3.13 compatibility issues
+numpy>=1.26.0
 python-dateutil==2.8.2
 
 # Async support
-aiohttp==3.9.0
-asyncio==3.4.3
+aiohttp>=3.9.0
+# asyncio==3.4.3  # asyncio is part of standard library
 
 # Environment variables
 python-dotenv==1.0.0

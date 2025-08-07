@@ -106,14 +106,14 @@ class ApartmentCRUD:
             raise
     
     @staticmethod
-    def get_filtered(db: Session, filters: ApartmentFilter) -> List[Apartment]:
+    def get_filtered(db: Session, filters: ApartmentFilter = None) -> List[Apartment]:
         """Get apartments with filters applied."""
         query = db.query(Apartment)
         
-        # Apply filters
+        # Apply filters only if filters object is provided
         conditions = []
         
-        if filters.city:
+        if filters and filters.city:
             conditions.append(Apartment.city.ilike(f"%{filters.city}%"))
         
         if filters.min_price is not None:
